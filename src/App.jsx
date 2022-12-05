@@ -11,16 +11,26 @@ function App() {
     {nombre: "Finalizadas", status: false}
   ]);
   const [modalVisibility, setModalVisibility] = useState(false);
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState( JSON.parse(localStorage.getItem("tasks")) ?? []);
   const [task, setTask] = useState({
     titulo: "",
     descripcion: "",
     status: ""
   });
-  const [errors, setErrors] = useState([])
+  const [errors, setErrors] = useState([]);
+  const [modalMode, setModalMode] = useState("");
 
 
   // useEffect 
+  useEffect(()=> {
+    localStorage.setItem("tasks",JSON.stringify(tasks))
+  }, [tasks]);
+
+  useEffect(() => {
+    // Consulta con fetch inicial
+    
+  }, []);
+
   // Funciones
   const change_tab = (tab_nombre) => {
     const new_tabs = tabs.map(tab => {
@@ -34,10 +44,17 @@ function App() {
   }
 
   const new_task = () => {
+    setErrors([]);
+    setModalMode("guardar");
     toggle_modal();
   }
 
   const close_modal = () => {
+    setTask({
+      titulo: "",
+      descripcion: "",
+      status: ""
+    });
     toggle_modal();
   }
 
@@ -47,7 +64,6 @@ function App() {
   }
 
   const insert_task = () => {
-    console.log("insert_task");
     //Validar campos
     if(
       task.titulo.trim() === "" ||
@@ -56,10 +72,18 @@ function App() {
     ){
       console.log("Hay campos vacios en el formulario");
       setErrors([...errors, {id: Math.random().toString().substring(2), error: "Hay campos vacios en el formulario"}])
+      return;
     }
 
-    //Guardar en tasks
-    setTasks([...tasks, {...task, ["id"]: Math.random().toString().substring(2)}])
+    if(modalMode === "guardar"){
+      //Guardar en tasks
+      setTasks([...tasks, {...task, ["id"]: Math.random().toString().substring(2)}])
+    }else{
+      // Editar tasks
+      const complement_task = tasks.filter(task_element => task.id !== task_element.id);
+      setTasks([...complement_task, task]);
+    }
+    
 
     //Limpiar task
     setTask(
@@ -74,9 +98,15 @@ function App() {
   }
 
   const delete_task = (e) => {
-    console.log(e.target.getAttribute("task_id"));
     const complemento = tasks.filter(task_element => task_element.id !== e.target.getAttribute("task_id"));
     setTasks(complemento)
+  }
+
+  const edit_task = (e) => {
+    const [selected_task] = tasks.filter(task_element => task_element.id === e.target.getAttribute("task_id"));
+    setTask(selected_task);
+    toggle_modal();
+    setModalMode("editar");
   }
 
   return (
@@ -100,6 +130,7 @@ function App() {
         tabs={tabs}
         tasks={tasks}
         delete_task={delete_task}
+        edit_task={edit_task}
       />
 
       <Form_modal 

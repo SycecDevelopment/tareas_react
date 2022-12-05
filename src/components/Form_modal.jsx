@@ -3,7 +3,6 @@ import Error_message from './Error_message';
 
 const Form_modal = ({modalVisibility, close_modal, task, setTask, insert_task, errors}) => {
 
-    console.log(errors.length);
     const {titulo, descripcion, status} = task;
     
     const get_data = (e) => {

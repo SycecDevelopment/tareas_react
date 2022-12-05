@@ -1,7 +1,7 @@
 import React from 'react'
 import Task from './Task';
 
-const Section = ({tab, tasks, delete_task}) => {
+const Section = ({tab, tasks, delete_task, edit_task}) => {
     const visibility_class = tab.status ? "" : "is-hidden";
     return (
         <div className={visibility_class}>
@@ -18,6 +18,7 @@ const Section = ({tab, tasks, delete_task}) => {
                                 key={Math.random().toString().substring(2)}
                                 task_element={task_element}
                                 delete_task={delete_task}
+                                edit_task={edit_task}
                             />
                         )
                     }                    

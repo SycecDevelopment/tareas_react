@@ -1,7 +1,7 @@
 import React from 'react'
 import Section from './Section'
 
-const Content = ({tabs, tasks, delete_task}) => {
+const Content = ({tabs, tasks, delete_task, edit_task}) => {
   return (
     <>
         {
@@ -11,6 +11,7 @@ const Content = ({tabs, tasks, delete_task}) => {
                     tab={tab}
                     tasks={tasks}
                     delete_task={delete_task}
+                    edit_task={edit_task}
                 />
             ))
         }

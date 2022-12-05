@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Task = ({task_element, delete_task}) => {
+const Task = ({task_element, delete_task, edit_task}) => {
     return (
         <div className="column is-one-quarter is-3">
             <div className="notification ">
@@ -13,7 +13,12 @@ const Task = ({task_element, delete_task}) => {
                 <p>{task_element.descripcion}</p> 
                 <hr />
                 <div className='is-flex is-justify-content-space-between	'>
-                    <a href="" className='has-text-link'>
+                    <a 
+                        href="#" 
+                        className='has-text-link' 
+                        onClick={edit_task}
+                        task_id={task_element.id}
+                    >
                         <i className="fa-solid fa-pen-to-square"></i> Editar
                     </a>
                     <a 
